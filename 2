@@ -1,0 +1,32 @@
+import discord
+import random
+import os
+from discord.ext import commands
+
+intents=discord.Intents.default()
+intents.message_content=True
+
+bot =commands.Bot(command_prefix="$" , intents=intents)
+
+ideas = ["transformar botellas de plastico en masetas",
+         "usar menos el coche",
+         "crear pulseras con hilos o tapas d eplastico "]
+
+@bot.event
+async def on_ready():
+    print(f"iniciaste sesion correctamente ID: {bot.user.id} , Usuario ,{bot.user} ")
+@bot.command()
+async def generadorIdeas(ctx):
+    idea=random.choice(ideas)
+    await ctx.send(f"ideas para reducir la contaminacion: {idea}")
+
+@bot.command()
+async def reciclar(ctx):
+    imagenes_cargadas=random.choice(os.listdir("imagen"))
+    with open(f'imagen/{imagenes_cargadas}', 'rb') as f:
+        # ¡Vamos a almacenar el archivo de la biblioteca Discord convertido en esta variable!
+        picture = discord.File(f)
+    # A continuación, podemos enviar este archivo como parámetro.
+    await ctx.send(file=picture)
+
+bot.run("")
